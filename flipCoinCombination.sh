@@ -1,5 +1,7 @@
 #!/bin/bash -x
 declare -A coinResult
+declare -A percentageCoin
+declare -a sorting
 heads=0
 tails=0
 HH=0
@@ -34,8 +36,8 @@ echo "tails"
 fi
 ((loop++))
 done
-echo "heads percentage is " $((heads*10))
-echo "tails parcentage is " $((tails*10))
+percentageCoin[H]=$((heads*10))
+percentageCoin[T]=$((tails*10))
 
 
 
@@ -49,28 +51,28 @@ if [[ $randomValue1 -eq 0 && $randomValue2 -eq 0 ]]
 then
 ((HH++))
 coinResult[HH]=$HH
-echo "HH"
+echo "Heads Heads"
 elif [[ $randomValue1 -eq 1 && $randomValue2 -eq 1 ]]
 then
 ((TT++))
 coinResult[TT]=$TT
-echo "TT"
+echo "Tails Tails"
 elif [[ $randomValue1 -eq 0 && $randomValue2 -eq 1 ]]
 then
 ((HT++))
 coinResult[HT]=$HT
-echo "HT"
+echo "Heads Tails"
 else
 ((TH++))
 coinResult[TH]=$TH
-echo "TH"
+echo "Tails Heads"
 fi
 ((loop++))
 done
-echo "HH percentage is " $((HH*10))
-echo "TT parcentage is " $((TT*10))
-echo "HT percentage is " $((HT*10))
-echo "TH parcentage is " $((TH*10))
+percentageCoin[HH]=$((HH*10))
+percentageCoin[TT]=$((TT*10))
+percentageCoin[HT]=$((HT*10))
+percentageCoin[TH]=$((TH*10))
 
 
 
@@ -84,49 +86,60 @@ if [[ $randomValue1 -eq 0 && $randomValue2 -eq 0 && $randomValue -eq 0 ]]
 then
 ((HHH++))
 coinResult[HHH]=$HHH
-echo "HHH"
+echo "Heads Heads Heads"
 elif [[ $randomValue1 -eq 0 && $randomValue2 -eq 0 && $randomValue -eq 1 ]]
 then
 ((HHT++))
 coinResult[HHT]=$HHT
-echo "HHT"
+echo "Heads Heads Tails"
 elif [[ $randomValue1 -eq 0 && $randomValue2 -eq 1 && $randomValue -eq 0 ]]
 then
 ((HTH++))
 coinResult[HTH]=$HTH
-echo "HTH"
+echo "Heads Tails Heads"
 elif [[ $randomValue1 -eq 0 && $randomValue2 -eq 1 && $randomValue -eq 1 ]]
 then
 ((HTT++))
 coinResult[HTT]=$HTT
-echo "HTT"
+echo "Heads Tails Tails"
 elif [[ $randomValue1 -eq 1 && $randomValue2 -eq 0 && $randomValue -eq 0 ]]
 then
 ((THH++))
 coinResult[THH]=$THH
-echo "THH"
+echo "Tails Heads Heads"
 elif [[ $randomValue1 -eq 1 && $randomValue2 -eq 0 && $randomValue -eq 1 ]]
 then
 ((THT++))
 coinResult[THT]=$THT
-echo "HHH"
+echo "Tails Heads Tails"
 elif [[ $randomValue1 -eq 1 && $randomValue2 -eq 1 && $randomValue -eq 0 ]]
 then
 ((TTH++))
 coinResult[TTH]=$TTH
-echo "TTH"
+echo "Tails Tails Heads"
 else
 ((TTT++))
 coinResult[TTT]=$TTT
-echo "HHH"
+echo "Tails Tails Tails"
 fi
 ((loop++))
 done
-echo "HHH percentage is " $((HHH*10))
-echo "HHT parcentage is " $((HHT*10))
-echo "HTH percentage is " $((HTH*10))
-echo "HTT parcentage is " $((HTT*10))
-echo "THH percentage is " $((THH*10))
-echo "THT parcentage is " $((THT*10))
-echo "TTH percentage is " $((TTH*10))
-echo "TTT parcentage is " $((TTT*10))
+percentageCoin[HHH]=$((HHH*10))
+percentageCoin[HHT]=$((HHT*10))
+percentageCoin[HTH]=$((HTH*10))
+percentageCoin[HTT]=$((HTT*10))
+percentageCoin[THH]=$((THH*10))
+percentageCoin[THT]=$((THT*10))
+percentageCoin[TTH]=$((TTH*10))
+percentageCoin[TTT]=$((TTT*10))
+
+
+sorting=( $(printf "%s\n" "${percentageCoin[@]}" | sort -n ))
+
+for i in ${!percentageCoin[@]};
+do
+if [[ ${percentageCoin[$i]} -eq ${sorting[13]} ]]
+then
+    echo "winner ----"${i}
+fi
+done 
